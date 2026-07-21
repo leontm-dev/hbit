@@ -11,7 +11,5 @@ files:
       - app
 publish: null
 extraResources:
-  from: "node_modules/.prisma/client"
-  to: "node_modules/.prisma/client"
-  filter:
-    - "*.node"
+  - from: "drizzle"
+    to: "drizzle"
