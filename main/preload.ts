@@ -1,5 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-import type { Prisma } from "./generated/prisma/client";
+import { MatchPopulated } from "./functions/match/get-all";
+import { DefaultApiResponse } from "uva-wrapper/dist/types/response.type";
+import { v2_getAccount_ResponseData } from "uva-wrapper/dist/account/v2/getAccount";
+
+console.log("Working");
 
 const handler = {
   send<T>(channel: string, value?: T) {
@@ -28,44 +32,30 @@ const storeApi = {
 contextBridge.exposeInMainWorld("store", storeApi);
 
 const dbApi = {
-  match: {
-    getAll: () =>
-      ipcRenderer.invoke("match:get-all") as Promise<
-        Prisma.MatchGetPayload<{
-          include: {
-            kills: { include: { assistants: true } };
-            rounds: {
-              include: {
-                playerStats: {
-                  include: { damageEvents: true };
-                };
-              };
-            };
-            players: true;
-          };
-        }>[]
-      >,
-    fetch: (size?: number, start?: number) =>
-      ipcRenderer.invoke("match:fetch", size, start) as Promise<
-        Prisma.MatchGetPayload<{
-          include: {
-            kills: { include: { assistants: true } };
-            rounds: {
-              include: {
-                playerStats: {
-                  include: { damageEvents: true };
-                };
-              };
-            };
-            players: true;
-          };
-        }>[]
-      >,
-  },
+  match_getAll: () =>
+    ipcRenderer.invoke("db:match:get-all") as Promise<MatchPopulated[]>,
+  match_fetch: (size?: number, start?: number) =>
+    ipcRenderer.invoke("db:match:fetch", size, start) as Promise<
+      MatchPopulated[]
+    >,
+  match_count: () => ipcRenderer.invoke("db:match:count") as Promise<number>,
+  match_clear: () => ipcRenderer.invoke("db:match:clear") as Promise<void>,
 };
 
 contextBridge.exposeInMainWorld("db", dbApi);
 
+const uva = {
+  checkPlayer: (name: string, tag: string) =>
+    ipcRenderer.invoke(
+      "uva:check-player",
+      name,
+      tag,
+    ) as Promise<DefaultApiResponse<v2_getAccount_ResponseData> | null>,
+};
+
+contextBridge.exposeInMainWorld("uva", uva);
+
 export type IpcHandler = typeof handler;
 export type StoreApi = typeof storeApi;
 export type DB = typeof dbApi;
+export type UVA = typeof uva;
