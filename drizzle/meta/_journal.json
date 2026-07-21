@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1784640680367,
+      "tag": "0000_careful_scorpion",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784650106075,
+      "tag": "0001_low_loners",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784650194378,
+      "tag": "0002_closed_ego",
+      "breakpoints": true
+    }
+  ]
+}

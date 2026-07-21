@@ -1,0 +1,1 @@
+ALTER TABLE `MatchPlayer` RENAME COLUMN "teamiId" TO "teamId";

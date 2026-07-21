@@ -1,0 +1,1 @@
+ALTER TABLE `MatchPlayer` ADD `teamiId` text NOT NULL;
