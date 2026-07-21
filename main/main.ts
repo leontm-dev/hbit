@@ -40,7 +40,7 @@ if (isProd) {
   });
   ipcMain.handle(
     "db:match:fetch",
-    async (_, size: number = 20, start: number = 0) => {
+    async (_, size: number = 10, start: number = 0) => {
       const key = (await store.get("user-key")) as string | undefined;
       const platform = (await store.get("user-platform")) as string | undefined;
       const affinity = (await store.get("user-affinity")) as string | undefined;
