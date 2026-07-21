@@ -1,0 +1,12 @@
+appId: me.leontm.hbit
+productName: How bad is it? Valorant analysis
+copyright: Copyright © 2026 Leon Anneken
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
