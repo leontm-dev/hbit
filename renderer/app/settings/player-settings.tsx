@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -20,7 +21,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { GamepadIcon, Globe, HashIcon, PcCase, User } from "lucide-react";
+import {
+  Check,
+  GamepadIcon,
+  Globe,
+  HashIcon,
+  PcCase,
+  RotateCcw,
+  User,
+  X,
+} from "lucide-react";
 import React from "react";
 
 export function PlayerSettings() {
@@ -29,6 +39,7 @@ export function PlayerSettings() {
   const [tag, setTag] = React.useState<string | undefined>(undefined);
   const [platform, setPlatform] = React.useState<string | undefined>(undefined);
   const [affinity, setAffinity] = React.useState<string | undefined>(undefined);
+  const [puuid, setPuuid] = React.useState<string | undefined>(undefined);
   React.useEffect(() => {
     async function load() {
       setLoading(true);
@@ -36,6 +47,7 @@ export function PlayerSettings() {
       setTag(await window.store.get("user-tag"));
       setAffinity(await window.store.get("user-affinity"));
       setPlatform(await window.store.get("user-platform"));
+      setPuuid(await window.store.get("user-puuid"));
       setLoading(false);
     }
     load();
@@ -98,7 +110,33 @@ export function PlayerSettings() {
                 }}
               />
             </InputGroup>
+            <Button
+              disabled={username === undefined || tag === undefined}
+              onClick={() => {
+                window.uva
+                  .checkPlayer(username || "", tag || "")
+                  .then((res) => {
+                    if (!res) return;
+
+                    setPuuid(res.data.puuid);
+                    window.store.set("user-puuid", res.data.puuid);
+                  });
+              }}
+            >
+              <RotateCcw /> Check player (requires api key)
+            </Button>
           </div>
+          <InputGroup>
+            <InputGroupAddon>
+              {puuid && <Check />}
+              {!puuid && <X />}
+            </InputGroupAddon>
+            <InputGroupInput
+              disabled
+              defaultValue={puuid}
+              placeholder="Puuid"
+            />
+          </InputGroup>
           <Select
             defaultValue={platform}
             onValueChange={(value) => {
