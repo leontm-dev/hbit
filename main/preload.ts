@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
+import type { Prisma } from "./generated/prisma/client";
 
 const handler = {
   send<T>(channel: string, value?: T) {
@@ -25,5 +26,46 @@ const storeApi = {
 };
 
 contextBridge.exposeInMainWorld("store", storeApi);
+
+const dbApi = {
+  match: {
+    getAll: () =>
+      ipcRenderer.invoke("match:get-all") as Promise<
+        Prisma.MatchGetPayload<{
+          include: {
+            kills: { include: { assistants: true } };
+            rounds: {
+              include: {
+                playerStats: {
+                  include: { damageEvents: true };
+                };
+              };
+            };
+            players: true;
+          };
+        }>[]
+      >,
+    fetch: (size?: number, start?: number) =>
+      ipcRenderer.invoke("match:fetch", size, start) as Promise<
+        Prisma.MatchGetPayload<{
+          include: {
+            kills: { include: { assistants: true } };
+            rounds: {
+              include: {
+                playerStats: {
+                  include: { damageEvents: true };
+                };
+              };
+            };
+            players: true;
+          };
+        }>[]
+      >,
+  },
+};
+
+contextBridge.exposeInMainWorld("db", dbApi);
+
 export type IpcHandler = typeof handler;
 export type StoreApi = typeof storeApi;
+export type DB = typeof dbApi;
