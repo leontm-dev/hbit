@@ -1,0 +1,935 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "173d1fb2-ff29-42ba-b630-ace8a70580f0",
+  "prevId": "defc31f1-8a6d-4cf0-80c2-1a87057d17fb",
+  "tables": {
+    "KillAssistant": {
+      "name": "KillAssistant",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "puuid": {
+          "name": "puuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "teamId": {
+          "name": "teamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "killCombinedId": {
+          "name": "killCombinedId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "KillAssistant_killCombinedId_Kill_combinedId_fk": {
+          "name": "KillAssistant_killCombinedId_Kill_combinedId_fk",
+          "tableFrom": "KillAssistant",
+          "tableTo": "Kill",
+          "columnsFrom": [
+            "killCombinedId"
+          ],
+          "columnsTo": [
+            "combinedId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Kill": {
+      "name": "Kill",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "matchId": {
+          "name": "matchId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "round": {
+          "name": "round",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "killerPuuid": {
+          "name": "killerPuuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "killerTeamId": {
+          "name": "killerTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "x": {
+          "name": "x",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "y": {
+          "name": "y",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "secondaryFireMode": {
+          "name": "secondaryFireMode",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "timeInMatchInMs": {
+          "name": "timeInMatchInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "timeInRoundInMs": {
+          "name": "timeInRoundInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "victimPuuid": {
+          "name": "victimPuuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "victimTeamId": {
+          "name": "victimTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "weaponId": {
+          "name": "weaponId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Kill_matchId_Match_id_fk": {
+          "name": "Kill_matchId_Match_id_fk",
+          "tableFrom": "Kill",
+          "tableTo": "Match",
+          "columnsFrom": [
+            "matchId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MatchPlayer": {
+      "name": "MatchPlayer",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "puuid": {
+          "name": "puuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tag": {
+          "name": "tag",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ability1CastCount": {
+          "name": "ability1CastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ability2CastCount": {
+          "name": "ability2CastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "signatureCastCount": {
+          "name": "signatureCastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ultimateCastCount": {
+          "name": "ultimateCastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "level": {
+          "name": "level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "agentId": {
+          "name": "agentId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "afkRoundsCount": {
+          "name": "afkRoundsCount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "friendlyFireIncoming": {
+          "name": "friendlyFireIncoming",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "friendlyFireOutgoing": {
+          "name": "friendlyFireOutgoing",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "roundsInSpawnCount": {
+          "name": "roundsInSpawnCount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cardId": {
+          "name": "cardId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "titleId": {
+          "name": "titleId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "loadoutAverage": {
+          "name": "loadoutAverage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "teamId": {
+          "name": "teamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "loadoutOverall": {
+          "name": "loadoutOverall",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "averageSpent": {
+          "name": "averageSpent",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "overallSpent": {
+          "name": "overallSpent",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "partyId": {
+          "name": "partyId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sessionPlaytimeInMs": {
+          "name": "sessionPlaytimeInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "assistsCount": {
+          "name": "assistsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "killsCount": {
+          "name": "killsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "deathsCounts": {
+          "name": "deathsCounts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bodyShotsCount": {
+          "name": "bodyShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "headShotsCount": {
+          "name": "headShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "legShotsCount": {
+          "name": "legShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "damageDealt": {
+          "name": "damageDealt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "damageReceived": {
+          "name": "damageReceived",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "score": {
+          "name": "score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tierId": {
+          "name": "tierId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "matchId": {
+          "name": "matchId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "MatchPlayer_matchId_Match_id_fk": {
+          "name": "MatchPlayer_matchId_Match_id_fk",
+          "tableFrom": "MatchPlayer",
+          "tableTo": "Match",
+          "columnsFrom": [
+            "matchId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MatchRoundPlayerStats": {
+      "name": "MatchRoundPlayerStats",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "puuid": {
+          "name": "puuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "teamId": {
+          "name": "teamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ability1CastCount": {
+          "name": "ability1CastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ability2CastCount": {
+          "name": "ability2CastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "signatureCastCount": {
+          "name": "signatureCastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ultimateCastCount": {
+          "name": "ultimateCastCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "score": {
+          "name": "score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "killsCount": {
+          "name": "killsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "headShotsCount": {
+          "name": "headShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bodyShotsCount": {
+          "name": "bodyShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "legShotsCount": {
+          "name": "legShotsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "loadoutValue": {
+          "name": "loadoutValue",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "remainingCredits": {
+          "name": "remainingCredits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "weaponId": {
+          "name": "weaponId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "armorId": {
+          "name": "armorId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "wasAfk": {
+          "name": "wasAfk",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "receivedPenalty": {
+          "name": "receivedPenalty",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "stayedInSpawn": {
+          "name": "stayedInSpawn",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "matchRoundCombinedId": {
+          "name": "matchRoundCombinedId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "MatchRoundPlayerStats_matchRoundCombinedId_MatchRound_combinedId_fk": {
+          "name": "MatchRoundPlayerStats_matchRoundCombinedId_MatchRound_combinedId_fk",
+          "tableFrom": "MatchRoundPlayerStats",
+          "tableTo": "MatchRound",
+          "columnsFrom": [
+            "matchRoundCombinedId"
+          ],
+          "columnsTo": [
+            "combinedId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MatchRoundPlayerStatsDamageEvents": {
+      "name": "MatchRoundPlayerStatsDamageEvents",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "playerUuid": {
+          "name": "playerUuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "playerTeamId": {
+          "name": "playerTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bodyShotCount": {
+          "name": "bodyShotCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "headShotCount": {
+          "name": "headShotCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "legShotCount": {
+          "name": "legShotCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "damage": {
+          "name": "damage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "matchRoundPlayerStatsCombinedId": {
+          "name": "matchRoundPlayerStatsCombinedId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "MatchRoundPlayerStatsDamageEvents_matchRoundPlayerStatsCombinedId_MatchRoundPlayerStats_combinedId_fk": {
+          "name": "MatchRoundPlayerStatsDamageEvents_matchRoundPlayerStatsCombinedId_MatchRoundPlayerStats_combinedId_fk",
+          "tableFrom": "MatchRoundPlayerStatsDamageEvents",
+          "tableTo": "MatchRoundPlayerStats",
+          "columnsFrom": [
+            "matchRoundPlayerStatsCombinedId"
+          ],
+          "columnsTo": [
+            "combinedId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MatchRound": {
+      "name": "MatchRound",
+      "columns": {
+        "combinedId": {
+          "name": "combinedId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "result": {
+          "name": "result",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ceremony": {
+          "name": "ceremony",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "winningTeamId": {
+          "name": "winningTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "defusePlayerUuid": {
+          "name": "defusePlayerUuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "defusePlayerTeamId": {
+          "name": "defusePlayerTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "defuseRoundTimeInMs": {
+          "name": "defuseRoundTimeInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "defused": {
+          "name": "defused",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "defuseX": {
+          "name": "defuseX",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "defuseY": {
+          "name": "defuseY",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "plantPlayerUuid": {
+          "name": "plantPlayerUuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "plantPlayerTeamId": {
+          "name": "plantPlayerTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "plantSite": {
+          "name": "plantSite",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "planted": {
+          "name": "planted",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "plantRoundTimeInMs": {
+          "name": "plantRoundTimeInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "plantX": {
+          "name": "plantX",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "planY": {
+          "name": "planY",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "matchId": {
+          "name": "matchId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "MatchRound_matchId_Match_id_fk": {
+          "name": "MatchRound_matchId_Match_id_fk",
+          "tableFrom": "MatchRound",
+          "tableTo": "Match",
+          "columnsFrom": [
+            "matchId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Match": {
+      "name": "Match",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gameLengthInMs": {
+          "name": "gameLengthInMs",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gameVersion": {
+          "name": "gameVersion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mapId": {
+          "name": "mapId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "platform": {
+          "name": "platform",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modeId": {
+          "name": "modeId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "seasonId": {
+          "name": "seasonId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cluster": {
+          "name": "cluster",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "startedAt": {
+          "name": "startedAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "region": {
+          "name": "region",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "winningTeamId": {
+          "name": "winningTeamId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

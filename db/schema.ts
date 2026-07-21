@@ -7,14 +7,14 @@ import { relations } from "drizzle-orm";
 
 export const matches = sqliteTable("Match", {
   id: text("id").primaryKey(),
-  gameLengthInMs: integer("gameLengthInMs", { mode: "number" }).notNull(), // Für BigInt in SQLite
+  gameLengthInMs: integer("gameLengthInMs", { mode: "number" }).notNull(),
   gameVersion: text("gameVersion").notNull(),
   mapId: text("mapId").notNull(),
   platform: text("platform").notNull(),
   modeId: text("modeId").notNull(),
   seasonId: text("seasonId").notNull(),
   cluster: text("cluster"),
-  startedAt: text("startedAt").notNull(), // ISO-String Date representation in SQLite
+  startedAt: text("startedAt").notNull(),
   region: text("region").notNull(),
   winningTeamId: text("winningTeamId").notNull(),
 });
@@ -39,11 +39,11 @@ export const matchRounds = sqliteTable("MatchRound", {
   planted: integer("planted", { mode: "boolean" }).notNull(),
   plantRoundTimeInMs: integer("plantRoundTimeInMs", { mode: "number" }),
   plantX: integer("plantX"),
-  planY: integer("planY"), // Originaler Tippfehler aus dem Prisma-Schema beibehalten
+  planY: integer("planY"),
 
   matchId: text("matchId")
     .notNull()
-    .references(() => matches.id),
+    .references(() => matches.id, { onDelete: "cascade" }),
 });
 
 export const matchRoundPlayerStats = sqliteTable("MatchRoundPlayerStats", {
@@ -70,7 +70,7 @@ export const matchRoundPlayerStats = sqliteTable("MatchRoundPlayerStats", {
 
   matchRoundCombinedId: text("matchRoundCombinedId")
     .notNull()
-    .references(() => matchRounds.combinedId),
+    .references(() => matchRounds.combinedId, { onDelete: "cascade" }),
 });
 
 export const matchRoundPlayerStatsDamageEvents = sqliteTable(
@@ -86,7 +86,9 @@ export const matchRoundPlayerStatsDamageEvents = sqliteTable(
 
     matchRoundPlayerStatsCombinedId: text(
       "matchRoundPlayerStatsCombinedId",
-    ).references(() => matchRoundPlayerStats.combinedId),
+    ).references(() => matchRoundPlayerStats.combinedId, {
+      onDelete: "cascade",
+    }),
   },
 );
 
@@ -129,14 +131,14 @@ export const matchPlayers = sqliteTable("MatchPlayer", {
 
   matchId: text("matchId")
     .notNull()
-    .references(() => matches.id),
+    .references(() => matches.id, { onDelete: "cascade" }),
 });
 
 export const kills = sqliteTable("Kill", {
   combinedId: text("combinedId").primaryKey(),
   matchId: text("matchId")
     .notNull()
-    .references(() => matches.id),
+    .references(() => matches.id, { onDelete: "cascade" }),
 
   round: integer("round").notNull(),
   killerPuuid: text("killerPuuid").notNull(),
@@ -160,11 +162,11 @@ export const killAssistants = sqliteTable("KillAssistant", {
 
   killCombinedId: text("killCombinedId")
     .notNull()
-    .references(() => kills.combinedId),
+    .references(() => kills.combinedId, { onDelete: "cascade" }),
 });
 
 // ============================================================================
-// RELATIONS DEFINITIONEN (für Query Builder wie db.query.matches.findMany)
+// RELATIONS DEFINITIONEN (unverändert)
 // ============================================================================
 
 export const matchesRelations = relations(matches, ({ many }) => ({

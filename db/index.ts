@@ -12,4 +12,5 @@ export function getDbPath(): string {
 }
 
 const sqlite = new Database(getDbPath());
+sqlite.pragma("foreign_keys = ON");
 export const db = drizzle(sqlite, { schema });
