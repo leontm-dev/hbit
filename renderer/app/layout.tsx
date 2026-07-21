@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "cnfast";
 import { Geist } from "next/font/google";
 import "../styles/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const GeistFont = Geist();
 export default function RootLayout({
@@ -25,7 +26,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
           </ThemeProvider>
         </body>
       </html>
