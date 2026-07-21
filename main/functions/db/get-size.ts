@@ -5,5 +5,5 @@ import { matches } from "../../../db/schema";
 export async function db_getSize() {
   const matchCount = await db.select({ count: count() }).from(matches);
 
-  return matchCount;
+  return matchCount[0].count;
 }
