@@ -1,5 +1,5 @@
 import { DefaultApiResponse } from "uva-wrapper/dist/types/response.type";
-import { UnofficialValorantAPI } from "uva-wrapper";
+// import { UnofficialValorantAPI } from "uva-wrapper";
 import { v4_getMatchesByName_ResponseData } from "uva-wrapper/dist/matches/v4/getMatchesByName";
 import { db } from "../../../db";
 import {
@@ -18,22 +18,29 @@ export async function match_fetch(
   platform: string,
   name: string,
   tag: string,
-  size: number = 20,
+  size: number = 10,
   start: number = 0,
 ) {
   try {
-    const uvaClient = new UnofficialValorantAPI(key);
+    // const uvaClient = new UnofficialValorantAPI(key);
     const matchesRes = await fetch(
       `https://api.henrikdev.xyz/valorant/v4/matches/${affinity}/${platform}/${name}/${tag}?size=${size}&start=${start}&mode=competitive`,
       { method: "GET", headers: { Authorization: key } },
     );
-    if (!matchesRes.ok) return [];
+    if (!matchesRes.ok) {
+      const data = await matchesRes.json();
+
+      console.log("Here", data);
+      return [];
+    }
 
     const matchesData = (
       (await matchesRes.json()) as DefaultApiResponse<
         v4_getMatchesByName_ResponseData[]
       >
     ).data;
+
+    console.log("Länge", matchesData.length);
 
     const registeredMatchIds: string[] = [];
 
@@ -58,7 +65,8 @@ export async function match_fetch(
             platform: match.metadata.platform,
             gameVersion: match.metadata.game_version,
           })
-          .onConflictDoNothing(); // Verhindert Fehler, falls das Match bereits existiert
+          .catch((err) => console.error(err));
+        // .onConflictDoNothing();
 
         // 2. PLAYERS INSERT (Bulk Insert)
         if (match.players && match.players.length > 0) {
@@ -99,7 +107,10 @@ export async function match_fetch(
             score: player.stats.score,
           }));
 
-          tx.insert(matchPlayers).values(playersValues).onConflictDoNothing();
+          tx.insert(matchPlayers)
+            .values(playersValues)
+            .catch((err) => console.error(err));
+          // .onConflictDoNothing();
         }
 
         // 3. ROUNDS, STATS & DAMAGE EVENTS INSERT
@@ -132,7 +143,8 @@ export async function match_fetch(
               defuseX: round.defuse?.location?.x,
               defuseY: round.defuse?.location?.y,
             })
-            .onConflictDoNothing();
+            .catch((err) => console.error(err));
+          // .onConflictDoNothing();
 
           for (const stats of round.stats) {
             const statsCombinedId = `${matchId}_${round.id}_${stats.player.puuid}`;
@@ -160,7 +172,8 @@ export async function match_fetch(
                 receivedPenalty: stats.received_penalty,
                 stayedInSpawn: stats.stayed_in_spawn,
               })
-              .onConflictDoNothing();
+              .catch((err) => console.error(err));
+            // .onConflictDoNothing();
 
             if (stats.damage_events && stats.damage_events.length > 0) {
               const dmgValues = stats.damage_events.map((dmg, dmgIdx) => ({
@@ -176,7 +189,8 @@ export async function match_fetch(
 
               tx.insert(matchRoundPlayerStatsDamageEvents)
                 .values(dmgValues)
-                .onConflictDoNothing();
+                .catch((err) => console.error(err));
+              // .onConflictDoNothing();
             }
           }
         }
@@ -202,7 +216,8 @@ export async function match_fetch(
               timeInRoundInMs: Number(kill.time_in_round_in_ms),
               weaponId: kill.weapon?.id || "",
             })
-            .onConflictDoNothing();
+            .catch((err) => console.error(err));
+          // .onConflictDoNothing();
 
           if (kill.assistants && kill.assistants.length > 0) {
             const assistantValues = kill.assistants.map((assistant) => ({
@@ -214,14 +229,19 @@ export async function match_fetch(
 
             tx.insert(killAssistants)
               .values(assistantValues)
-              .onConflictDoNothing();
+              .catch((err) => console.error(err));
+            // .onConflictDoNothing();
           }
         }
       }
     });
 
+    console.log(registeredMatchIds.length, "Länge 2");
     // 5. INFOS ABFRAGEN UND ZURÜCKGEBEN (entspricht Prisma `include: { ... }`)
-    if (registeredMatchIds.length === 0) return [];
+    if (registeredMatchIds.length === 0) {
+      console.log("Here2");
+      return [];
+    }
 
     const result = await db.query.matches.findMany({
       where: (matches, { inArray }) => inArray(matches.id, registeredMatchIds),
@@ -243,6 +263,8 @@ export async function match_fetch(
         },
       },
     });
+
+    console.log(result.length);
 
     return result;
   } catch (error) {
