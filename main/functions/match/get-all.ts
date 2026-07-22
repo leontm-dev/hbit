@@ -7,7 +7,7 @@ export async function match_getAll() {
     orderBy: desc(matches.startedAt),
     with: {
       players: true,
-      kills: true,
+      kills: { with: { assistants: true } },
       rounds: { with: { playerStats: { with: { damageEvents: true } } } },
     },
   });
