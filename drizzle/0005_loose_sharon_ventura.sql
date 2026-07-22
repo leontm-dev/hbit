@@ -1,0 +1,2 @@
+ALTER TABLE `MatchPlayer` RENAME COLUMN "signatureCastCount" TO "grenadeCastCount";--> statement-breakpoint
+ALTER TABLE `MatchRoundPlayerStats` RENAME COLUMN "signatureCastCount" TO "grenadeCastCount";
