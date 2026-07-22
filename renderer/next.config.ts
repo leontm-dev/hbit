@@ -12,6 +12,16 @@ const config: NextConfig = {
   },
   typedRoutes: true,
   compress: true,
+  cacheComponents: true,
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+    browserToTerminal: true,
+    incomingRequests: true,
+    serverFunctions: true,
+  },
 };
 
 export default config;
