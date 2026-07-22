@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 import { MatchPopulated } from "./functions/match/get-all";
 import { DefaultApiResponse } from "uva-wrapper/dist/types/response.type";
 import { v2_getAccount_ResponseData } from "uva-wrapper/dist/account/v2/getAccount";
+import { PopulatedPlayer } from "./functions/party/get-many";
 
 console.log("Working");
 
@@ -40,6 +41,10 @@ const dbApi = {
     >,
   match_count: () => ipcRenderer.invoke("db:match:count") as Promise<number>,
   match_clear: () => ipcRenderer.invoke("db:match:clear") as Promise<void>,
+  match_getOne: (id: string) =>
+    ipcRenderer.invoke("db:match:get-one", id) as Promise<MatchPopulated>,
+  player_getMany: (id: string) =>
+    ipcRenderer.invoke("db:player:get-many", id) as Promise<PopulatedPlayer>,
 };
 
 contextBridge.exposeInMainWorld("db", dbApi);
