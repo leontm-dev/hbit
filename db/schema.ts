@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 
 // ============================================================================
 // TABELLEN DEFINITIONEN
@@ -53,7 +53,7 @@ export const matchRoundPlayerStats = sqliteTable("MatchRoundPlayerStats", {
 
   ability1CastCount: integer("ability1CastCount").notNull(),
   ability2CastCount: integer("ability2CastCount").notNull(),
-  signatureCastCount: integer("signatureCastCount").notNull(),
+  grenadeCastCount: integer("grenadeCastCount").notNull(),
   ultimateCastCount: integer("ultimateCastCount").notNull(),
   score: integer("score").notNull(),
   killsCount: integer("killsCount").notNull(),
@@ -99,7 +99,7 @@ export const matchPlayers = sqliteTable("MatchPlayer", {
   tag: text("tag").notNull(),
   ability1CastCount: integer("ability1CastCount").notNull(),
   ability2CastCount: integer("ability2CastCount").notNull(),
-  signatureCastCount: integer("signatureCastCount").notNull(),
+  grenadeCastCount: integer("grenadeCastCount").notNull(),
   ultimateCastCount: integer("ultimateCastCount").notNull(),
   level: integer("level").notNull(),
   agentId: text("agentId").notNull(),
@@ -244,3 +244,5 @@ export const schema = {
   killsRelations,
   killAssistantsRelations,
 };
+export type UnpopulatedMatchPlayer = InferSelectModel<typeof matches>;
+export type UnpopulatedMatch = InferSelectModel<typeof matches>;
