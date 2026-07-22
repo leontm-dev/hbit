@@ -9,6 +9,9 @@ import { match_fetch } from "./functions/match/fetch";
 import { api_checkPlayer } from "./functions/api/check-player";
 import { db_getSize } from "./functions/db/get-size";
 import { db_clear } from "./functions/db/clear";
+import { player_getMany } from "./functions/party/get-many";
+import { match_getOne } from "./functions/match/get-one";
+import { dbCache } from "./cache";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -51,6 +54,7 @@ if (isProd) {
         return [];
       }
 
+      dbCache.invalidate("matches:all");
       return await match_fetch(key, affinity, platform, name, tag, size, start);
     },
   );
@@ -58,13 +62,29 @@ if (isProd) {
     return await db_getSize();
   });
   ipcMain.handle("db:match:clear", async (_) => {
+    dbCache.clear();
     return await db_clear();
+  });
+  ipcMain.handle("db:match:get-one", async (_, id: string) => {
+    return await dbCache.getOrSet(
+      `match:${id}`,
+      async () => await match_getOne(id),
+    );
+  });
+  ipcMain.handle("db:player:get-many", async (_, id: string) => {
+    return await dbCache.getOrSet(
+      `player:${id}`,
+      async () => await player_getMany(id),
+    );
   });
   ipcMain.handle("uva:check-player", async (_, name: string, tag: string) => {
     const key = (await store.get("user-key")) as string | undefined;
     if (!key) return null;
 
-    return await api_checkPlayer(key, name, tag);
+    return await dbCache.getOrSet(
+      "matches:all",
+      async () => await api_checkPlayer(key, name, tag),
+    );
   });
 
   const preloadPath = isProd
