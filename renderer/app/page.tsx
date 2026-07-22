@@ -10,11 +10,10 @@ export default function HomePage() {
   const [refreshKey, setRefreshKey] = React.useState(0);
 
   const handleMatchesUpdated = () => {
-    // Erhöht den Key, um MatchResults zu einem Refetch/Re-render zu zwingen
     setRefreshKey((prev) => prev + 1);
   };
   return (
-    <div className="flex flex-col gap-4 p-4 h-full min-h-screen max-w-screen">
+    <div className="flex h-full min-h-screen max-w-screen flex-col gap-4 p-4">
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-primary font-extrabold">How bad is it?</h1>
         <div className="flex flex-row items-center gap-2">
