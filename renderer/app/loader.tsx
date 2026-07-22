@@ -17,10 +17,14 @@ import {
 import { CloudDownload, ListStartIcon, RulerIcon } from "lucide-react";
 import React from "react";
 
-export function MatchesLoader() {
+interface MatchesLoaderProps {
+  onMatchesFetched?: () => void;
+}
+
+export function MatchesLoader(props: MatchesLoaderProps) {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [start, setStart] = React.useState<number>(0);
-  const [size, setSize] = React.useState<number>(20);
+  const [size, setSize] = React.useState<number>(10);
   return (
     <Card>
       <CardHeader>
@@ -66,6 +70,7 @@ export function MatchesLoader() {
 
                 return setSize(ev.target.valueAsNumber);
               }}
+              max={10}
             />
             <InputGroupAddon align={"inline-end"}>
               <InputGroupText>total items</InputGroupText>
@@ -76,7 +81,9 @@ export function MatchesLoader() {
           onClick={() => {
             setLoading(true);
             window.db.match_fetch(size, start).then((res) => {
-              console.log(res);
+              if (props.onMatchesFetched) {
+                props.onMatchesFetched();
+              }
               setLoading(false);
             });
           }}
