@@ -1,6 +1,7 @@
 import {
   AgentsResponse,
-  CompetitiveTiersResponse,
+  GearsResponse,
+  WeaponsResponse,
 } from "@valpro-labs/valorant-api";
 import { MatchPopulated } from "../../../../../main/functions/match/get-all";
 import {
@@ -21,12 +22,15 @@ import {
 import cn from "cnfast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PersonStanding } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   agents: AgentsResponse;
   players: MatchPopulated["players"];
   round: MatchPopulated["rounds"][number];
   roundKills: MatchPopulated["kills"];
+  armors: GearsResponse;
+  weapons: WeaponsResponse;
 };
 export function PlayerTableRound(props: Props) {
   return (
@@ -43,7 +47,12 @@ export function PlayerTableRound(props: Props) {
               <TableHead>K/D/A</TableHead>
               <TableHead>Abilities</TableHead>
               <TableHead>Shots</TableHead>
-              <TableHead>Damage dealt</TableHead>
+              <TableHead>∆ Damage</TableHead>
+              <TableHead>$ Remaining</TableHead>
+              <TableHead>Loadout</TableHead>
+              <TableHead>Loadout $</TableHead>
+              <TableHead>AFK</TableHead>
+              <TableHead>Penalty</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="w-full">
@@ -63,9 +72,16 @@ export function PlayerTableRound(props: Props) {
                   (s) => s.puuid === player.puuid,
                 );
                 if (!agent || !stats) return <></>;
+                const weapon = props.weapons.find(
+                  (w) => stats.weaponId === w.uuid,
+                );
+                const armor = props.armors.find(
+                  (a) => a.uuid === stats.armorId,
+                );
 
                 return (
                   <TableRow
+                    key={player.puuid}
                     className={cn(
                       player.teamId === "Red"
                         ? "bg-red-500/20"
@@ -139,6 +155,7 @@ export function PlayerTableRound(props: Props) {
                             alt=""
                             height={20}
                             width={20}
+                            className="size-6"
                           />
                         </div>
                         <div className="flex flex-row items-center gap-1">
@@ -152,6 +169,7 @@ export function PlayerTableRound(props: Props) {
                             alt=""
                             height={20}
                             width={20}
+                            className="size-6"
                           />
                         </div>
                         <div className="flex flex-row items-center gap-1">
@@ -165,6 +183,7 @@ export function PlayerTableRound(props: Props) {
                             alt=""
                             height={20}
                             width={20}
+                            className="size-6"
                           />
                         </div>
                         <div className="flex flex-row items-center gap-1">
@@ -178,6 +197,7 @@ export function PlayerTableRound(props: Props) {
                             alt=""
                             height={20}
                             width={20}
+                            className="size-6"
                           />
                         </div>
                       </div>
@@ -202,9 +222,78 @@ export function PlayerTableRound(props: Props) {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {stats.damageEvents
-                        .filter((a) => a.playerUuid === player.puuid)
-                        .reduce((s, c) => s + c.damage, 0)}
+                      <Tooltip>
+                        <TooltipContent>
+                          <p>
+                            Dealt:{" "}
+                            {stats.damageEvents.reduce(
+                              (s, c) => s + c.damage,
+                              0,
+                            )}
+                          </p>
+                          <p>
+                            Received:{" "}
+                            {props.round.playerStats
+                              .map((p) => p.damageEvents)
+                              .flat(1)
+                              .filter((e) => e.playerUuid === player.puuid)
+                              .reduce((s, c) => s + c.damage, 0)}
+                          </p>
+                        </TooltipContent>
+                        <TooltipTrigger asChild>
+                          <p>
+                            {String(
+                              stats.damageEvents.reduce(
+                                (s, c) => s + c.damage,
+                                0,
+                              ) -
+                                props.round.playerStats
+                                  .map((p) => p.damageEvents)
+                                  .flat(1)
+                                  .filter((e) => e.playerUuid === player.puuid)
+                                  .reduce((s, c) => s + c.damage, 0),
+                            )}
+                          </p>
+                        </TooltipTrigger>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>${stats.remainingCredits}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-row items-center gap-2">
+                        {weapon && (
+                          <Image
+                            src={weapon.displayIcon}
+                            alt=""
+                            height={30}
+                            width={200}
+                            className="h-6 w-auto"
+                          />
+                        )}
+                        {armor && (
+                          <Image
+                            src={armor.displayIcon}
+                            alt=""
+                            height={30}
+                            width={30}
+                            className="size-6"
+                          />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>${stats.loadoutValue}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        aria-readonly
+                        defaultChecked={stats.wasAfk}
+                        onChange={(ev) => ev.preventDefault()}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Checkbox
+                        aria-readonly
+                        defaultChecked={stats.receivedPenalty}
+                        onChange={(ev) => ev.preventDefault()}
+                      />
                     </TableCell>
                   </TableRow>
                 );
