@@ -61,6 +61,7 @@ export function PlayerTableFullGame(props: Props) {
 
                 return (
                   <TableRow
+                    key={player.puuid}
                     className={cn(
                       player.teamId === "Red"
                         ? "bg-red-500/20"
@@ -109,6 +110,7 @@ export function PlayerTableFullGame(props: Props) {
                             alt=""
                             height={30}
                             width={30}
+                            className="size-8"
                           />
                         </TooltipTrigger>
                       </Tooltip>
