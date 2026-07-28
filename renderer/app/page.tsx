@@ -5,13 +5,21 @@ import { DownloadCloud, Settings2 } from "lucide-react";
 import { MatchResults } from "./result";
 import { MatchesLoader } from "./loader";
 import React from "react";
+import { MatchPopulated } from "../../main/functions/match/get-all";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function HomePage() {
-  const [refreshKey, setRefreshKey] = React.useState(0);
-
-  const handleMatchesUpdated = () => {
-    setRefreshKey((prev) => prev + 1);
-  };
+  const [matches, setMatches] = React.useState<MatchPopulated[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setMatches(await window.db.match_getAll());
+      setLoading(false);
+    }
+    load();
+  }, []);
   return (
     <div className="flex h-full min-h-screen max-w-screen flex-col gap-4 p-4">
       <div className="flex flex-row items-center justify-between">
@@ -27,8 +35,26 @@ export default function HomePage() {
           </Link>
         </div>
       </div>
-      <MatchesLoader onMatchesFetched={handleMatchesUpdated} />
-      <MatchResults key={refreshKey} />
+      <MatchesLoader
+        addNewlyLoadedMatches={(m) =>
+          setMatches((prev) => {
+            const prevCopy = [...prev];
+            m.filter(
+              (a) => prevCopy.find((e) => e.id === a.id) === undefined,
+            ).forEach((e) => prevCopy.push(e));
+
+            return prevCopy;
+          })
+        }
+      />
+      {loading && (
+        <Card>
+          <CardContent>
+            <Skeleton className="shimmer-color-accent h-30 w-full rounded-md" />
+          </CardContent>
+        </Card>
+      )}
+      {!loading && <MatchResults matches={matches} />}
     </div>
   );
 }

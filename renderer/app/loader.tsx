@@ -16,9 +16,11 @@ import {
 } from "@/components/ui/input-group";
 import { CloudDownload, ListStartIcon, RulerIcon } from "lucide-react";
 import React from "react";
+import { MatchPopulated } from "../../main/functions/match/get-all";
 
 interface MatchesLoaderProps {
   onMatchesFetched?: () => void;
+  addNewlyLoadedMatches: (matches: MatchPopulated[]) => void;
 }
 
 export function MatchesLoader(props: MatchesLoaderProps) {
@@ -81,6 +83,7 @@ export function MatchesLoader(props: MatchesLoaderProps) {
           onClick={() => {
             setLoading(true);
             window.db.match_fetch(size, start).then((res) => {
+              props.addNewlyLoadedMatches(res);
               if (props.onMatchesFetched) {
                 props.onMatchesFetched();
               }

@@ -4,6 +4,7 @@ import { AccountLevelDistributionOfEnemies } from "./account-level-distribution-
 
 type Props = {
   matches: MatchPopulated[];
+  hostPuuid: string;
 };
 
 export type Category = "Account level";
@@ -15,6 +16,7 @@ export type ChartProps = {
   tags: Tag[];
   id: string;
   matches: MatchPopulated[];
+  hostPuuid: string;
 };
 export function ResultCharts(props: Props) {
   const charts: {
@@ -32,20 +34,22 @@ export function ResultCharts(props: Props) {
           ]}
           id="account-level-distribution"
           matches={props.matches}
+          hostPuuid={props.hostPuuid}
         />
       ),
     },
   ];
   return (
-    <div className="flex flex-col h-full gap-4">
+    <div className="flex h-full flex-col gap-4">
       <ToggleGroup type="multiple"></ToggleGroup>
-      <div className="flex flex-row w-full gap-2">
+      <div className="flex w-full flex-row gap-2">
         <AccountLevelDistributionOfEnemies
           tags={[
             { name: "Account level", color: "text-red-400 border-red-400" },
           ]}
           id="account-level-distribution"
           matches={props.matches}
+          hostPuuid={props.hostPuuid}
         />
       </div>
     </div>
