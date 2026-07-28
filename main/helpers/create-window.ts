@@ -78,7 +78,10 @@ export const createWindow = (
       contextIsolation: true,
       ...options.webPreferences,
     },
+    title: "How bad is it? - Valorant analysis",
   });
+
+  win.removeMenu();
 
   win.on("close", saveState);
 
