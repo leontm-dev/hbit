@@ -79,6 +79,14 @@ export const createWindow = (
       ...options.webPreferences,
     },
     title: "How bad is it? - Valorant analysis",
+    fullscreen: true,
+    fullscreenable: true,
+    autoHideMenuBar: true,
+    accentColor: "",
+    backgroundColor: "",
+    minimizable: true,
+    closable: true,
+    focusable: true,
   });
 
   win.removeMenu();
