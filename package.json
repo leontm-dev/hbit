@@ -28,7 +28,7 @@
     "motion": "^12.42.2",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.6.4",
-    "recharts": "^3.8.0",
+    "recharts": "^3.10.1",
     "sonner": "^2.0.7",
     "uva-wrapper": "^4.9.1",
     "vaul": "^1.1.2"
