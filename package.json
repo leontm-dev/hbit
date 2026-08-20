@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@valpro-labs/valorant-api": "^1.7.0",
-    "better-sqlite3": "^13.0.1",
+    "better-sqlite3": "^13.0.3",
     "cnfast": "^0.0.8",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
@@ -28,9 +28,9 @@
     "motion": "^12.42.2",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.6.4",
-    "recharts": "^3.8.0",
+    "recharts": "^3.10.1",
     "sonner": "^2.0.7",
-    "uva-wrapper": "^4.9.0",
+    "uva-wrapper": "^4.9.1",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "prisma": "^7.9.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "shadcn": "^4.13.1",
+    "shadcn": "^4.18.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.2.2",
     "tsx": "^4.23.1",
