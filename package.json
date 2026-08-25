@@ -19,7 +19,7 @@
   "dependencies": {
     "@valpro-labs/valorant-api": "^1.7.0",
     "better-sqlite3": "^13.0.3",
-    "cnfast": "^0.0.8",
+    "cnfast": "^0.1.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "electron-serve": "^3.0.0",
